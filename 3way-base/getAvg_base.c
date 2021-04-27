@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <pthread.h>
-#include <string.h>
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
@@ -58,19 +56,22 @@ void chunk_array(int ID)
         //char local_char_array[array_size][MAX_LINE_SIZE];
         //printf("char\n");
         int i, j;
+	float avg; 
 
-        //printf("start : %d\n", startPos);
+       //printf("start : %d\n", startPos);
         //printf("end : %d\n", endPos);
         for ( i = 0 ; i < endPos-startPos; i++ )
         {
-                //printf("cpy array%d\n" , i);
+                //printf("cpy array %d\n" , i+startPos);
                 strncpy(local_char_array[i] ,char_array[i+startPos], MAX_LINE_SIZE);
         }
-
+	//printf("start computation\n");
         for ( i = 0 ; i < endPos-startPos; i++ )
         {
-                //printf("cpy array2%d\n", i);
-                out_put_array[i+startPos] = find_avg(local_char_array[i], strlen(local_char_array[i]));
+                //printf("cpy array2 %d\n", i+startPos);
+		avg = find_avg(local_char_array[i], strlen(local_char_array[i]));
+		//printf("found avg\n"); 
+                out_put_array[i+startPos] = avg;
         }
 
 
@@ -88,10 +89,16 @@ int i;
 int main()
 {
         int i ;
+	/*printf("init output\n");
+	for ( i = 0 ; i < MAX_LINES; i++ ){
+	 	out_put_array[i] = 0.0 ;
+		printf("set array to 0.0\n"); 
+	}*/
+
         read_file();
         for ( i = 0 ; i <  NUM_THREADS; i++ )
         {
-                printf("calling chunk_array()\n");
+                printf("calling chunk_array(%d)\n", i);
                 chunk_array(i);
         }
         print_results();
