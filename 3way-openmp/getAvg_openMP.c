@@ -11,7 +11,7 @@
 
 char char_array[MAX_LINES][MAX_LINE_SIZE];
 float out_put_array[MAX_LINES];
-char local_char_array[MAX_LINES/NUM_THREADS][MAX_LINE_SIZE];
+char local_char_array[MAX_LINES][MAX_LINE_SIZE];
 
 float find_avg(char* line, int nchars) {
     int i, j;
@@ -52,22 +52,23 @@ void chunk_array(int ID)
     int startPos = ID * (MAX_LINES / NUM_THREADS);
     int endPos = startPos + (MAX_LINES / NUM_THREADS);
     int i;
-
+    //char local_char_array[MAX_LINES/NUM_THREADS][MAX_LINE_SIZE];
 
     #pragma omp private(ID, startPos, endPos, i, local_char_array, out_put_array)
     {
+	//#pragma omp critical
+	//{
         for ( i = 0 ; i < endPos-startPos; i++ )
         {
             //printf("cpy array%d\n" , i);
-            strncpy(local_char_array[i] ,char_array[i+startPos], MAX_LINE_SIZE);
+            strncpy(local_char_array[i+startPos] ,char_array[i+startPos], MAX_LINE_SIZE);
         }
-
-        #pragma omp critical
-        {
+	#pragma omp critical
+	{
             for ( i = 0 ; i < endPos-startPos; i++ )
             {
                 //printf("cpy array2%d\n", i);
-                out_put_array[i+startPos] = find_avg(local_char_array[i], strlen(local_char_array[i]));
+                out_put_array[i+startPos] = find_avg(local_char_array[i+startPos], strlen(local_char_array[i+startPos]));
             }
         }
     }
