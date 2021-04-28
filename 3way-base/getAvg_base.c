@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/time.h>
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
@@ -88,7 +89,12 @@ int i;
 
 int main()
 {
+        //These variables need to be initialized.
+	struct timeval t1, t2;
+	double elapsedTime;
+	int numSlots, myVersion = 1;
         int i ;
+        gettimeofday(&t1, NULL);
 	/*printf("init output\n");
 	for ( i = 0 ; i < MAX_LINES; i++ ){
 	 	out_put_array[i] = 0.0 ;
@@ -102,5 +108,10 @@ int main()
                 chunk_array(i);
         }
         print_results();
+        gettimeofday(&t2, NULL);
 
+	//Lastly, this goes at the end of the code.
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
+	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
 }

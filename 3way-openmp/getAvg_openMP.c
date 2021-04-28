@@ -3,6 +3,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <string.h>
+#include <sys/time.h>
 #include "omp.h"
 
 #define MAX_LINES 1000000
@@ -85,8 +86,13 @@ void print_results()
 int main()
 {
     omp_set_num_threads(NUM_THREADS);
-
+    //These variables need to be initialized.
+	struct timeval t1, t2;
+	double elapsedTime;
+	int numSlots, myVersion = 1;
     int i ;
+    //This is the timer starter, code goes after this.
+	gettimeofday(&t1, NULL);
     read_file();
 
     #pragma omp parallel
@@ -95,5 +101,9 @@ int main()
     }
 
     print_results();
-
+    gettimeofday(&t2, NULL);
+	//Lastly, this goes at the end of the code.
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
+	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
 }
