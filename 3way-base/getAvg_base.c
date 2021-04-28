@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_LINES 1000000
+#define MAX_LINES 1000
 #define MAX_LINE_SIZE 2001
 #define NUM_THREADS 4
 

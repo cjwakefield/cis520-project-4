@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     {
         read_file();
     }
-    MPI_Bcast(char_array, MAX_LINES, MPI_CHAR, 0, MPI_COMM_WORLD);
+    MPI_Bcast(char_array, MAX_LINES*MAX_LINE_SIZE, MPI_CHAR, 0, MPI_COMM_WORLD);
         printf("MPI_Bcast\n");
     chunk_array(&rank);
         printf("cunk_array\n");
