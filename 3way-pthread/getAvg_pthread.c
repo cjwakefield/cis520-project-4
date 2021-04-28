@@ -6,7 +6,7 @@
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
-#define NUM_THREADS 4
+#define NUM_THREADS 16
 
 char char_array[MAX_LINES][MAX_LINE_SIZE];
 float out_put_array[MAX_LINES];
