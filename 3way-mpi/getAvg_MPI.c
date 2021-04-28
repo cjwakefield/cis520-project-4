@@ -49,9 +49,12 @@ void *chunk_array(void *ID)
     int startPos = *((int *)(ID)) * (MAX_LINES / NUM_THREADS);
     int endPos = startPos + (MAX_LINES / NUM_THREADS);
     int i, j;
+
+    //printf("start:%s\n", startPos);
+    //printf("end:%s\n", endPos);
     for ( i = 0 ; i < endPos-startPos; i++ )
     {
-        local_char_array[i] = find_avg(char_array[i+startPos],  strlen(char_array[i+startPos]));
+        local_char_array[i+startPos] = find_avg(char_array[i+startPos],  strlen(char_array[i+startPos]));
     }
 
     //for ( i = 0 ; i < endPos-startPos; i++ )
@@ -96,7 +99,7 @@ int main(int argc, char* argv[])
     {
         read_file();
     }
-    MPI_Bcast(char_array, MAX_LINES * MAX_LINE_SIZE, MPI_CHAR, 0, MPI_COMM_WORLD);
+    MPI_Bcast(char_array, MAX_LINES, MPI_CHAR, 0, MPI_COMM_WORLD);
         printf("MPI_Bcast\n");
     chunk_array(&rank);
         printf("cunk_array\n");
