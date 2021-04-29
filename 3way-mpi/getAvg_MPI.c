@@ -40,7 +40,7 @@ void read_file()
         if( err == EOF ) break;
         strncpy(char_array[i] ,line, MAX_LINE_SIZE);
     }
-    printf("file done\n");
+    //printf("file done\n");
     fclose( fd );
 
 }
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 
 
     NUM_THREADS = numTask;
-    printf("size = %d rank = %d\n", numTask, rank);
+    //printf("size = %d rank = %d\n", numTask, rank);
     fflush(stdout);
 
     if (rank == 0)
@@ -106,23 +106,24 @@ int main(int argc, char* argv[])
         read_file();
     }
     MPI_Bcast(char_array, MAX_LINES*MAX_LINE_SIZE, MPI_CHAR, 0, MPI_COMM_WORLD);
-        printf("MPI_Bcast\n");
+       // printf("MPI_Bcast\n");
     chunk_array(&rank);
-        printf("cunk_array\n");
+       // printf("cunk_array\n");
     MPI_Reduce(local_char_array, out_put_array, MAX_LINES, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
-        printf("MPI_Reduce\n");
+       // printf("MPI_Reduce\n");
 
     if (rank == 0)
-    {   printf("befor print\n");
+    {   //printf("befor print\n");
         print_results();
-        printf("affter print\n");
-    }
+        //printf("affter print\n");
+    
 
-    MPI_Finalize();
-    gettimeofday(&t2, NULL);
+    	gettimeofday(&t2, NULL);
 
 	//Lastly, this goes at the end of the code.
 	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
 	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
-	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
+	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime); 
+    }
+    MPI_Finalize();
 }

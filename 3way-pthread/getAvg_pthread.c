@@ -123,12 +123,14 @@ int main()
         }
 
         print_results();
-        pthread_mutex_destroy(&mutexcalc);
-        pthread_exit(NULL);
-gettimeofday(&t2, NULL);
+	gettimeofday(&t2, NULL);
 
 	//Lastly, this goes at the end of the code.
 	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
 	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
 	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
+
+	pthread_mutex_destroy(&mutexcalc);
+	pthread_exit(NULL);
+
 }
