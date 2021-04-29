@@ -108,7 +108,7 @@ int main()
         pthread_mutex_init(&mutexcalc, NULL);
 
         read_file();
-
+	//gettimeofday(&t1, NULL);
         for ( i = 0 ; i <  NUM_THREADS; i++ )
         {
                 rc = pthread_create(&threads[i], &attr, chunk_array, (void *)i);
@@ -121,7 +121,7 @@ int main()
                 rc = pthread_join(threads[i], &status);
                  if (rc) {printf("error on thread death\n"); exit(-1);        }
         }
-
+	//gettimeofday(&t2, NULL);
         print_results();
 	gettimeofday(&t2, NULL);
 

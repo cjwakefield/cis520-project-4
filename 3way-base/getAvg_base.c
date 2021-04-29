@@ -102,11 +102,13 @@ int main()
 	}*/
 
         read_file();
+	//gettimeofday(&t1, NULL);
         for ( i = 0 ; i <  NUM_THREADS; i++ )
         {
                 printf("calling chunk_array(%d)\n", i);
                 chunk_array(i);
         }
+	//gettimeofday(&t2, NULL);
         print_results();
         gettimeofday(&t2, NULL);
 
