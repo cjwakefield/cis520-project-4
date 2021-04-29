@@ -7,12 +7,13 @@
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
-#define NUM_THREADS 16
+//#define NUM_THREADS 16
 
 char char_array[MAX_LINES][MAX_LINE_SIZE];
 float out_put_array[MAX_LINES];
 char local_char_array[MAX_LINES][MAX_LINE_SIZE];
 pthread_mutex_t mutexcalc;
+int NUM_THREADS; 
 
 float find_avg(char* line, int nchars) {
    int i, j;
@@ -94,6 +95,8 @@ void print_results()
 
 int main()
 {
+	NUM_THREADS = atoi(getenv("SLURM_NTASKS"));
+	printf("NUM_THREAD : %d" , NUM_THREADS);
         pthread_t threads[NUM_THREADS];
         pthread_attr_t attr;
         void *status;

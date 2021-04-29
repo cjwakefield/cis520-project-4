@@ -8,12 +8,12 @@
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
-#define NUM_THREADS 4
+//#define NUM_THREADS 4
 
 char char_array[MAX_LINES][MAX_LINE_SIZE];
 float out_put_array[MAX_LINES];
 char local_char_array[MAX_LINES][MAX_LINE_SIZE];
-
+int NUM_THREADS ;
 float find_avg(char* line, int nchars) {
     int i, j;
     float sum = 0;
@@ -85,6 +85,7 @@ void print_results()
 
 int main()
 {
+    NUM_THREADS = atoi(getenv("SLURM_NTASKS")); 
     omp_set_num_threads(NUM_THREADS);
     //These variables need to be initialized.
 	struct timeval t1, t2;
