@@ -3,6 +3,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <string.h>
+#include <sys/time.h>
 #include "mpi.h"
 
 #define MAX_LINES 1000000
@@ -77,7 +78,12 @@ void print_results()
 
 int main(int argc, char* argv[])
 {
+    //These variables need to be initialized.
+	struct timeval t1, t2;
+	double elapsedTime;
+	int numSlots, myVersion = 1;
     int i, numTask, rank, arc;
+    gettimeofday(&t1, NULL);
     MPI_Status Status;
 
     arc = MPI_Init(&argc, &argv);
@@ -113,4 +119,10 @@ int main(int argc, char* argv[])
     }
 
     MPI_Finalize();
+    gettimeofday(&t2, NULL);
+
+	//Lastly, this goes at the end of the code.
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
+	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
 }

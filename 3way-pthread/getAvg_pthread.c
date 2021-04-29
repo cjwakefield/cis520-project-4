@@ -3,6 +3,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <string.h>
+#include <sys/time.h>
 
 #define MAX_LINES 1000000
 #define MAX_LINE_SIZE 2001
@@ -97,7 +98,11 @@ int main()
         pthread_attr_t attr;
         void *status;
         int i, rc;
-
+        //These variables need to be initialized.
+	struct timeval t1, t2;
+	double elapsedTime;
+	int numSlots, myVersion = 1;
+        gettimeofday(&t1, NULL);
         pthread_attr_init(&attr);
         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
         pthread_mutex_init(&mutexcalc, NULL);
@@ -120,5 +125,10 @@ int main()
         print_results();
         pthread_mutex_destroy(&mutexcalc);
         pthread_exit(NULL);
+gettimeofday(&t2, NULL);
 
+	//Lastly, this goes at the end of the code.
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
+	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
 }
