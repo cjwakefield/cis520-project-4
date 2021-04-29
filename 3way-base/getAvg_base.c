@@ -94,7 +94,7 @@ int main()
 	double elapsedTime;
 	int numSlots, myVersion = 1;
         int i ;
-        gettimeofday(&t1, NULL);
+        //gettimeofday(&t1, NULL);
 	/*printf("init output\n");
 	for ( i = 0 ; i < MAX_LINES; i++ ){
 	 	out_put_array[i] = 0.0 ;
@@ -102,13 +102,15 @@ int main()
 	}*/
 
         read_file();
+	gettimeofday(&t1, NULL);
         for ( i = 0 ; i <  NUM_THREADS; i++ )
         {
                 printf("calling chunk_array(%d)\n", i);
                 chunk_array(i);
         }
+	gettimeofday(&t2, NULL);
         print_results();
-        gettimeofday(&t2, NULL);
+        //gettimeofday(&t2, NULL);
 
 	//Lastly, this goes at the end of the code.
 	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
