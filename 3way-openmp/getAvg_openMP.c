@@ -92,18 +92,18 @@ int main()
 	int numSlots, myVersion = 1;
     int i ;
     //This is the timer starter, code goes after this.
-	gettimeofday(&t1, NULL);
+    gettimeofday(&t1, NULL);
     read_file();
-
+    //gettimeofday(&t1, NULL);
     #pragma omp parallel
     {
             chunk_array(omp_get_thread_num());
     }
-
+    //gettimeofday(&t2, NULL);
     print_results();
     gettimeofday(&t2, NULL);
 	//Lastly, this goes at the end of the code.
-	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+	elapsedTime = (t2.tv_sec - t1.tv_sec) * 1000.0; //sec to mmeofday(&t2, NULL);s
 	elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0; // us to ms
 	printf("DATA, %d, %s, %f\n", myVersion, getenv("SLURM_NTASKS"),  elapsedTime);
 }
